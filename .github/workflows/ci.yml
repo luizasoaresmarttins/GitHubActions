@@ -1,0 +1,34 @@
+# .github/workflows/ci.yml
+name: Node.js CI
+
+# Define quando a automação será executada
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+# Define os trabalhos que serão executados
+jobs:
+  build:
+    # Sistema operacional da máquina virtual do GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo 1: Baixa o código do seu repositório para a máquina virtual
+    - name: Fazer checkout do código
+      uses: actions/checkout@v4
+
+    # Passo 2: Instala e configura a versão do Node.js
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Você pode usar a versão de sua preferência
+
+    # Passo 3: Instala as dependências (como o Jest) usando 'npm ci' para builds mais limpos
+    - name: Instalar dependências
+      run: npm ci
+
+    # Passo 4: Executa os testes
+    - name: Rodar testes
+      run: npm test
